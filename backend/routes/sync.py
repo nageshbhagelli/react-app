@@ -1,0 +1,1 @@
+# For /sync/* endpoints
