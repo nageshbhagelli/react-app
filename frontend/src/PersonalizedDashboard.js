@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function PersonalizedDashboard() {
   const [userName, setUserName] = useState("");
@@ -65,7 +66,18 @@ function PersonalizedDashboard() {
         </button>
       </header>
 
+      {/* Navigation */}
+      <div className="flex gap-4 mb-6">
+        <Link
+          to="/orders"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Orders Mgmt
+        </Link>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Portfolio Summary */}
         <section className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Portfolio Summary</h2>
           <ul>
@@ -83,6 +95,7 @@ function PersonalizedDashboard() {
           </ul>
         </section>
 
+        {/* Watchlist */}    
         <section className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Watchlist</h2>
           <ul>
@@ -98,6 +111,7 @@ function PersonalizedDashboard() {
           </ul>
         </section>
 
+        {/* Latest News */} 
         <section className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Latest News</h2>
           <ul className="space-y-3">

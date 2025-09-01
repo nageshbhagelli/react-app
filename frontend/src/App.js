@@ -6,6 +6,10 @@ import Signup from "./Signup";
 import PersonalizedDashboard from "./PersonalizedDashboard"; // User-specific dashboard
 import ProtectedRoute from "./ProtectedRoute";
 
+// ** NEW **
+import Orders from "./Orders";
+// ~NEW
+
 function App() {
   return (
     <Routes>
@@ -22,6 +26,16 @@ function App() {
         element={
           <ProtectedRoute>
             <PersonalizedDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* NEW */}
+      <Route
+        path="/orders"
+        element={
+          <ProtectedRoute>
+            <Orders />
           </ProtectedRoute>
         }
       />
