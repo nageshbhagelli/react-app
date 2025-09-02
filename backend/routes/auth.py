@@ -15,6 +15,7 @@ from utils import (
     get_current_user,
     ACCESS_TOKEN_EXPIRE_MINUTES
 )
+from models.auth import UserCreate, Token, User, ForgotPasswordRequest, RefreshTokenRequest
 # from ..models import User, UserCreate, Token, ForgotPasswordRequest, RefreshTokenRequest
 
 # For helper functions. (hashing, jwt, etc.)
@@ -24,24 +25,7 @@ from utils import (
 router = APIRouter()
 
 # ------ Models ------
-class UserCreate(BaseModel):
-    username: str
-    email: EmailStr
-    password: str
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class User(BaseModel):
-    username: str
-    email: EmailStr
-
-class RefreshTokenRequest(BaseModel):
-    token: str 
-
-class ForgotPasswordRequest(BaseModel):
-    email: EmailStr
+# imported from models/auth.py
 
 # ------ Utility functions ------
 def authenticate_user(username: str, password: str):

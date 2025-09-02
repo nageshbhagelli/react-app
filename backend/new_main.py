@@ -6,7 +6,7 @@ from routes.orders import router as orders_router
 from routes.trades import router as trades_router
 from routes.positions import router as positions_router
 from routes.sync import router as sync_router
-from routes.profile import router as profile_router
+from routes.portfolio import router as portfolio_router
 
 app = FastAPI()
 
@@ -27,3 +27,4 @@ app.include_router(trades_router, prefix="/trades", tags=["Trades"])
 app.include_router(positions_router, prefix="/positions", tags=["Positions"])
 app.include_router(sync_router, prefix="/sync", tags=["Sync"])
 app.include_router(profile_router, prefix="/profile", tags=["Profile"])
+app.include_router(portfolio_router, prefix="/portfolio", tags=["Portfolio"])

@@ -3,7 +3,7 @@
 # routes/dashboard.py
 from fastapi import APIRouter, Depends
 from typing import Dict, Any
-from utils import get_current_user
+from utils import get_current_user, get_current_user_orders, get_current_user_trades, get_open_positions
 from db import orders_db, trades_db
 
 router = APIRouter()
@@ -12,10 +12,12 @@ router = APIRouter()
 @router.get("/summary")
 # To get the summary of the current user's portfolio. => total positions, P&L, risk, leverage.
 async def dashboard_summary(current_user: Dict = Depends(get_current_user)) -> Dict[str, Any]:
-    user_orders = orders_db.get(current_user["username"], [])
-    user_trades = trades_db.get(current_user["username"], [])
+    # user_orders = get_current_user_orders(current_user["username"])
+    user_trades = get_current_user_trades(current_user["username"])
+    open_positions = get_open_positions(current_user["username"])
 
-    total_positions = len(user_orders)
+    # Total positions = FILLED orders only.
+    total_positions = len(open_positions)
     total_trades = len(user_trades)
     pnl = sum([t.price * t.qty if t.side == "SELL" else -t.price * t.qty for t in user_trades])
     leverage = 2  # mocked
@@ -46,6 +48,7 @@ async def dashboard_performance(current_user: Dict = Depends(get_current_user)) 
 @router.get("/distribution")
 # To get the current user's portfolio distribution
 async def dashboard_distribution(current_user: Dict = Depends(get_current_user)) -> Dict[str, Any]:
+    # Mock distribution data at the moment.    
     distribution = {
         "equity": 60,
         "futures_options": 25,

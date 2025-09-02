@@ -7,7 +7,7 @@ from datetime import datetime
 
 from utils import get_current_user
 from db import user_db, trades_db
-from models import Trade, TradeCreate
+from models.trades import Trade, TradeCreate
 
 router = APIRouter()
 

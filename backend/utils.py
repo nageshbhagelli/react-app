@@ -6,7 +6,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
-from db import user_db
+from db import user_db, orders_db, trades_db, portfolios_db
 
 
 # Security constants. => this can be moved to a config file later.
@@ -21,7 +21,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
-# Password helper functions.
+# *** Password helper functions. ***
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
@@ -29,7 +29,7 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-# JWT helper functions.
+# *** JWT helper functions. ***
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -47,7 +47,27 @@ def decode_token(token: str):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid authentication credentials")
 
-# Dependencies
+
+# *** Orders and trades helper functions. ***
+from db import orders_db, trades_db
+
+def get_current_user_orders(username: str):
+    return orders_db.get(username, [])
+
+def get_current_user_trades(username: str):
+    return trades_db.get(username, [])
+
+def get_open_positions(username: str):
+    return [o for o in get_user_orders(username) if o.status == "FILLED"]
+
+def get_closed_positions(username: str):
+    return [o for o in get_user_orders(username) if o.status in ("CANCELLED")]
+
+# *** Portfolio helper functions. ***
+def calculate_realized_pnl(username: str):
+    return sum([trade.profit_loss for trade in get_current_user_trades(username)])
+
+# *** Dependencies ***
 def get_current_user(token: str = Depends(oauth2_scheme)):
     username = decode_token(token)
     user = user_db.get(username)

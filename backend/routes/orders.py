@@ -1,14 +1,13 @@
 # For /orders/* endpoints
 
-from fastapi import APIRouter, Depends, HTTPException, Body
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Optional, List, Dict
 from uuid import uuid4
-from datetime import datetime
 
-from utils import get_current_user
 from db import user_db, orders_db
-from models import Order, OrderCreate, Trade
+from models.orders import Order, OrderCreate
+from models.trades import Trade
+from utils import get_current_user
 
 router = APIRouter()
 
