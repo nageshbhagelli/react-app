@@ -1,0 +1,25 @@
+User Action
+   │
+   └──> /orders POST → create new order (status = OPEN)
+   
+Order Lifecycle
+   │
+   └──> /orders PATCH /fill → order status = FILLED
+           └── create Trade in trades_db
+
+Positions
+   │
+   └──> positions.py fetches FILLED orders from orders_db as open positions
+       └── history endpoint fetches CANCELLED orders
+
+Dashboard
+   │
+   └──> dashboard.py summary, performance, distribution
+           └── reads from orders_db (FILLED / CANCELLED) + trades_db (for P&L)
+
+
+Key principle:
+    * Orders are the source of truth for both trades and positions.
+    * Trades are derived from filled orders.
+    * Positions are derived from FILLED orders.
+    * Dashboard aggregates orders + trades + positions dynamically.
